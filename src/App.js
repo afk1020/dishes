@@ -1,25 +1,81 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import Header from './Components/Header'
+import DishForm from './Components/DishForm'
+import DishContainer from './Components/DishContainer'
 
-function App() {
+
+class App extends React.Component {
+  state = {
+    dishes:[],
+  }
+
+  //view all dishes
+  componentDidMount(){
+    fetch("http://localhost:3000/dishes")
+    .then(res => res.json())
+    .then(data => this.handleData(data))
+  }
+
+  handleData = (dish) =>{
+    this.setState({
+      dishes: dish
+    })
+  }
+
+  // add a dish
+  addDish = (newDish)=>{
+    let postOption = {
+      method: "POST",
+      headers: {
+        "Content-Type": 'application/json',
+        Accepts: 'application/json'
+      },
+      body: JSON.stringify(newDish)
+    }
+
+    fetch("http://localhost:3000/dishes", postOption)
+    .then(res => res.json())
+    .then(this.setState({dishes: [...this.state.dishes, newDish]}))
+  }
+
+  deleteDish = (id) => {
+    fetch("http://localhost:3000/dishes" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": 'application/json',
+        Accepts: 'application/json'
+      },
+    })
+
+    .then(res => res.json)
+    .then(deleteDish => this.setState({
+      dishes: this.state.dishes.filter((dish)=> dish.id !==id)
+    }))
+  };
+  
+  handleClick = () => {
+    let newBoolean = !this.state.display
+    this.setState({
+      display: newBoolean
+    })
+  }
+  render(){
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <>
+        <Header />
+        { this.state.display
+          ?
+          <DishForm addDish={this.addDish} />
+          :
+          null
+        }
+        <div className="buttonContainer">
+          <button onClick={this.handleClick}> Add a Dish </button>
+        </div>
+        <DishContainer dishData={this.state.dishes} delete={this.deleteDish} />
+      </>
+    );
+  }
 }
-
 export default App;
