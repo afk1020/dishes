@@ -5,7 +5,6 @@ import DishForm from './Components/DishForm'
 import DishContainer from './Components/DishContainer'
 
 
-const localdb = "http://localhost:3000/dishes"
 
 class App extends React.Component {
   state = {
@@ -14,9 +13,9 @@ class App extends React.Component {
 
   //view all dishes
   componentDidMount(){
-    fetch(localdb)
+    fetch("http://localhost:3000/dishes")
     .then(res => res.json())
-    .then(data => console.log(data))
+    .then(data => this.handleData(data))
     
   }
 
@@ -37,13 +36,13 @@ class App extends React.Component {
       body: JSON.stringify(newDish)
     }
 
-    fetch(localdb, postOption)
+    fetch("http://localhost:3000/dishes", postOption)
     .then(res => res.json())
     .then(this.setState({dishes: [...this.state.dishes, newDish]}))
   }
 
   deleteDish = (id) => {
-    fetch(localdb + id, {
+    fetch("http://localhost:3000/dishes" + id, {
       method: "DELETE",
       headers: {
         "Content-Type": 'application/json',
