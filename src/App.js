@@ -5,6 +5,8 @@ import DishForm from './Components/DishForm'
 import DishContainer from './Components/DishContainer'
 
 
+const localdb = "http://localhost:3000/dishes"
+
 class App extends React.Component {
   state = {
     dishes:[],
@@ -12,9 +14,10 @@ class App extends React.Component {
 
   //view all dishes
   componentDidMount(){
-    fetch("http://localhost:3000/dishes")
+    fetch(localdb)
     .then(res => res.json())
-    .then(data => this.handleData(data))
+    .then(data => console.log(data))
+    
   }
 
   handleData = (dish) =>{
@@ -34,17 +37,17 @@ class App extends React.Component {
       body: JSON.stringify(newDish)
     }
 
-    fetch("http://localhost:3000/dishes", postOption)
+    fetch(localdb, postOption)
     .then(res => res.json())
     .then(this.setState({dishes: [...this.state.dishes, newDish]}))
   }
 
   deleteDish = (id) => {
-    fetch("http://localhost:3000/dishes" + id, {
+    fetch(localdb + id, {
       method: "DELETE",
       headers: {
         "Content-Type": 'application/json',
-        Accepts: 'application/json'
+        "Accept": 'application/json'
       },
     })
 
@@ -53,7 +56,7 @@ class App extends React.Component {
       dishes: this.state.dishes.filter((dish)=> dish.id !==id)
     }))
   };
-  
+
   handleClick = () => {
     let newBoolean = !this.state.display
     this.setState({
@@ -71,7 +74,7 @@ class App extends React.Component {
           null
         }
         <div className="buttonContainer">
-          <button onClick={this.handleClick}> Add a Dish </button>
+          <button onClick={this.handleClick}> Dish Form </button>
         </div>
         <DishContainer dishData={this.state.dishes} delete={this.deleteDish} />
       </>
