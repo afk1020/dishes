@@ -42,11 +42,11 @@ class App extends React.Component {
   }
 
   deleteDish = (id) => {
-    fetch("http://localhost:3000/dishes" + id, {
+    fetch('http://localhost:3000/dishes/' + id, {
       method: "DELETE",
       headers: {
         "Content-Type": 'application/json',
-        "Accept": 'application/json'
+        Accepts: 'application/json'
       },
     })
 

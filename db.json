@@ -1,10 +1,6 @@
 {
   "dishes": [
     {
-      "id": 1,
-      "name": "pizza"
-    },
-    {
       "name": "fish",
       "id": 2
     }
