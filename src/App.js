@@ -66,15 +66,7 @@ class App extends React.Component {
   return (
       <>
         <Header />
-        { this.state.display
-          ?
-          <DishForm addDish={this.addDish} />
-          :
-          null
-        }
-        <div className="buttonContainer">
-          <button onClick={this.handleClick}> Dish Form </button>
-        </div>
+        <DishForm addDish={this.addDish} />
         <DishContainer dishData={this.state.dishes} delete={this.deleteDish} />
       </>
     );
